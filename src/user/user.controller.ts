@@ -1,36 +1,48 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Res, Put, Param, Delete, HttpStatus } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto } from './model/dto/create-user.dto';
+import { UpdateUserDto } from './model/dto/update-user.dto';
 
 @Controller('users')
 export class UserController {
 
-  constructor(private readonly userService: UserService) {}
+
+  constructor(private readonly userService: UserService) { }
+
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  create(@Res() response, @Body() createUserDto: CreateUserDto) {
+    const newUser = this.userService.create(createUserDto);
+    return response.status(HttpStatus.CREATED).json({ newUser })
   }
+
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  findAll(@Res() response) {
+    const users = this.userService.findAll();
+    return response.status(HttpStatus.OK).json({ users })
   }
+
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  findOne(@Res() response, @Param('id') id: string) {
+    const user = this.userService.findOne(+id);
+    return response.status(HttpStatus.OK).json({ user });
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+
+  @Put(':id')
+  update(@Res() response, @Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    const updatedBook = this.userService.update(+id, updateUserDto);
+    return response.status(HttpStatus.OK).json({ updatedBook })
   }
+
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  delete(@Res() response, @Param('id') id: string) {
+    const deletedBook = this.userService.delete(+id);
+    return response.status(HttpStatus.OK).json({ deletedBook })
   }
+
 
 }
