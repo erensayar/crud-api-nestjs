@@ -1,14 +1,15 @@
-import { IsNotEmpty, IsNumber, IsString, MaxLength } from "class-validator";
+import { IsNotEmpty, IsString, MaxLength } from "class-validator";
 
 export class CreateNoteDto {
 
     @IsString()
-    @MaxLength(30)
     @IsNotEmpty()
+    @MaxLength(30)
     title: string;
 
     @IsString()
-    @MaxLength(100000)
     @IsNotEmpty()
+    @MaxLength(100000)
     content: string;
+
 }

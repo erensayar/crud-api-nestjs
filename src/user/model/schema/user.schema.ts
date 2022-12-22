@@ -2,11 +2,11 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type UserDocument = User & Document;
 
-@Schema()
+@Schema({_id: true})
 export class User {
 
-    @Prop()
-    id: Number;
+    //@Prop()
+    //id: Number;
 
     @Prop()
     firstName: { type: String, default: null };

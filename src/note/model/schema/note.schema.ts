@@ -2,11 +2,11 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type NoteDocument = Note & Document;
 
-@Schema()
+@Schema({_id: true})
 export class Note {
 
-    @Prop()
-    id: Number;
+    //@Prop()
+    //id: Number;
 
     @Prop()
     UserId: Number;
