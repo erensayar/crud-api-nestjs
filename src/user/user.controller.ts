@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Res, Put, Param, Delete, HttpStatus } from
 import { UserService } from './user.service';
 import { CreateUserDto } from './model/dto/create-user.dto';
 import { UpdateUserDto } from './model/dto/update-user.dto';
+import { UserDocument } from './model/schema/user.schema';
 
 @Controller('users')
 export class UserController {
@@ -11,37 +12,42 @@ export class UserController {
 
 
   @Post()
-  create(@Res() response, @Body() createUserDto: CreateUserDto) {
-    const newUser = this.userService.create(createUserDto);
-    return response.status(HttpStatus.CREATED).json({ newUser })
+  async create(@Res({ passthrough: true }) response, @Body() createUserDto: CreateUserDto): Promise<UserDocument> {
+    const newUser = await this.userService.create(createUserDto);
+    response.status(HttpStatus.CREATED);
+    return newUser;
   }
 
 
   @Get()
-  findAll(@Res() response) {
+  findAll(@Res({ passthrough: true }) response): Promise<UserDocument[]> {
     const users = this.userService.findAll();
-    return response.status(HttpStatus.OK).json({ users })
+    response.status(HttpStatus.OK);
+    return users;
   }
 
 
   @Get(':id')
-  findOne(@Res() response, @Param('id') id: string) {
-    const user = this.userService.findOne(+id);
-    return response.status(HttpStatus.OK).json({ user });
+  async findOne(@Res({ passthrough: true }) response, @Param('id') id: string): Promise<UserDocument> {
+    const user = await this.userService.findOne(+id);
+    response.status(HttpStatus.OK);
+    return user;
   }
 
 
   @Put(':id')
-  update(@Res() response, @Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    const updatedBook = this.userService.update(+id, updateUserDto);
-    return response.status(HttpStatus.OK).json({ updatedBook })
+  async update(@Res({ passthrough: true }) response, @Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<UserDocument> {
+    const updatedBook = await this.userService.update(+id, updateUserDto);
+    response.status(HttpStatus.OK);
+    return updatedBook;
   }
 
 
   @Delete(':id')
-  delete(@Res() response, @Param('id') id: string) {
-    const deletedBook = this.userService.delete(+id);
-    return response.status(HttpStatus.OK).json({ deletedBook })
+  async delete(@Res({ passthrough: true }) response, @Param('id') id: string): Promise<UserDocument> {
+    const deletedBook = await await this.userService.delete(+id);
+    response.status(HttpStatus.OK);
+    return deletedBook;
   }
 
 

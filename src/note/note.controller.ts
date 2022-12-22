@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Res, Put, Param, Delete, HttpStatus } from
 import { NoteService } from './note.service';
 import { CreateNoteDto } from './model/dto/create-note.dto';
 import { UpdateNoteDto } from './model/dto/update-note.dto';
+import { NoteDocument } from './model/schema/note.schema';
 
 @Controller('notes')
 export class NoteController {
@@ -11,37 +12,42 @@ export class NoteController {
 
 
   @Post()
-  create(@Res() response, @Body() createNoteDto: CreateNoteDto) {
-    const newNote = this.noteService.create(createNoteDto);
-    return response.status(HttpStatus.CREATED).json({ newNote })
+  async create(@Res() response, @Body() createNoteDto: CreateNoteDto): Promise<NoteDocument> {
+    const newNote = await this.noteService.create(createNoteDto);
+    response.status(HttpStatus.CREATED);
+    return newNote;
   }
 
 
   @Get()
-  findAll(@Res() response) {
-    const notes = this.noteService.findAll();
-    return response.status(HttpStatus.OK).json({ notes })
+  async findAll(@Res() response): Promise<NoteDocument[]> {
+    const notes = await this.noteService.findAll();
+    response.status(HttpStatus.OK);
+    return notes;
   }
 
 
   @Get(':id')
-  findOne(@Res() response, @Param('id') id: string) {
-    const note = this.noteService.findOne(+id);
-    return response.status(HttpStatus.OK).json({ note });
+  async findOne(@Res() response, @Param('id') id: string): Promise<NoteDocument> {
+    const note = await this.noteService.findOne(+id);
+    response.status(HttpStatus.OK);
+    return note;
   }
 
 
   @Put(':id')
-  update(@Res() response, @Param('id') id: string, @Body() updateNoteDto: UpdateNoteDto) {
-    const updatedBook = this.noteService.update(+id, updateNoteDto);
-    return response.status(HttpStatus.OK).json({ updatedBook })
+  async update(@Res() response, @Param('id') id: string, @Body() updateNoteDto: UpdateNoteDto): Promise<NoteDocument> {
+    const updatedBook = await this.noteService.update(+id, updateNoteDto);
+    response.status(HttpStatus.OK);
+    return updatedBook;
   }
 
 
   @Delete(':id')
-  delete(@Res() response, @Param('id') id: string) {
-    const deletedBook = this.noteService.delete(+id);
-    return response.status(HttpStatus.OK).json({ deletedBook })
+  async delete(@Res() response, @Param('id') id: string): Promise<NoteDocument> {
+    const deletedBook = await this.noteService.delete(+id);
+    response.status(HttpStatus.OK);
+    return deletedBook;
   }
 
 

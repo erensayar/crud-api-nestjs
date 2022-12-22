@@ -24,7 +24,7 @@ export class CreateUserDto {
 
     @IsNumber()
     @IsNotEmpty()
-    @MaxLength(30)
+    @MaxLength(2)
     age: Number;
 
 }

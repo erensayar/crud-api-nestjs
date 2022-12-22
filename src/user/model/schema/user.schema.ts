@@ -9,22 +9,22 @@ export class User {
     //id: Number;
 
     @Prop()
-    firstName: { type: String, default: null };
+    firstName: String;
 
     @Prop()
-    lastName: { type: String, default: null };
+    lastName: String;
 
     @Prop()
-    email: { type: String, unique: true };
+    email: String;
 
     @Prop()
-    password: { type: String };
+    password: String;
 
     @Prop()
-    age: { type: Number, min: 18, max: 65 };
+    age: Number;
 
     @Prop()
-    token: { type: String };
+    token: String;
 
 }
 
